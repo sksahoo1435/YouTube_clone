@@ -1,9 +1,10 @@
 .filterContainer {
     display: flex;
     justify-content: space-between;
+    margin-left: 10px;
     align-items: center;
     position: sticky;
-    background: white;
+    background: rgba(7, 7, 7, 0.022);
     z-index: 999;
     gap: 10px;
     padding-bottom: 5px;
