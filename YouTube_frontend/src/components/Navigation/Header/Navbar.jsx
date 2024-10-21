@@ -6,22 +6,11 @@ import { HiOutlineDotsVertical } from "react-icons/hi";
 import { CgProfile } from "react-icons/cg";
 import youtube from '../../../assets/images/youtube.png';
 import SearchInput from '../Search/Search';
+import useMobile from '../../CustomsHooks/UseMobile';
 
 const Navbar = ({ toggleSidebar }) => {
   const [showSearch, setShowSearch] = useState(false);
-  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
-
-  const handleResize = () => {
-    setIsMobile(window.innerWidth < 768);
-    if (window.innerWidth >= 768) {
-      setShowSearch(false);
-    }
-  };
-
-  useEffect(() => {
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
+  const isMobile = useMobile();
 
   return (
     <div className={styles.navbar_container}>
