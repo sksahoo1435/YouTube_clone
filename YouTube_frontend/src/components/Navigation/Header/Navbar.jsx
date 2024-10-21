@@ -7,7 +7,7 @@ import { CgProfile } from "react-icons/cg";
 import youtube from '../../../assets/images/youtube.png';
 import SearchInput from '../Search/Search';
 
-const Navbar = () => {
+const Navbar = ({ toggleSidebar }) => {
   const [showSearch, setShowSearch] = useState(false);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
 
@@ -26,8 +26,8 @@ const Navbar = () => {
   return (
     <div className={styles.navbar_container}>
       <div className={styles.iconNhambugger}>
-        <div className={styles.hambugger_icon}>
-          <RxHamburgerMenu size="1.5rem" />
+        <div className={styles.hambugger_icon} onClick={toggleSidebar}>
+          <RxHamburgerMenu size="1.5rem" cursor="pointer"/>
         </div>
         <div className={`${showSearch ? styles.youtubeIconsInactive : styles.youtubeIcons}`}>
           <img src={youtube} alt='YouTube Icons' />

@@ -1,6 +1,8 @@
 .navbar_container {
     height: 56px;
     padding: 0 16px;
+    position: fixed;
+    z-index: 999;
     width: 100%;
     display: flex;
     flex-direction: row;
