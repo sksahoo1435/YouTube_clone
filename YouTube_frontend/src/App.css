@@ -1,4 +1,4 @@
-*{
+* {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -10,9 +10,11 @@
   will-change: filter;
   transition: filter 300ms;
 }
+
 .logo:hover {
   filter: drop-shadow(0 0 2em #646cffaa);
 }
+
 .logo.react:hover {
   filter: drop-shadow(0 0 2em #61dafbaa);
 }
@@ -50,17 +52,37 @@
 
 .icon {
   margin-right: 10px;
+  font-size: large;
 }
 
 .main_content {
   flex-grow: 1;
+  transition: margin-left 300ms;
 }
 
+
+.main_content_collapsed {
+  width: calc(100% - 60px);
+}
+
+.main_content_expanded {
+  margin-left: 200px;
+  width: calc(100% - 200px);
+}
+
+@media (max-width: 1280px) {
+
+  .main_content_expanded {
+    margin-left: 0px;
+    width: 100% !important;
+  }
+}
 
 @keyframes logo-spin {
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }

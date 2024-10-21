@@ -1,33 +1,4 @@
-// import { useState } from 'react';
-// import './App.css'
-// import Home from './components/Homes/Home'
-// import Navbar from './components/Navigation/Header/Navbar'
-// import Sidebar from './components/Navigation/Sidebar/Sidebar'
-
-// function App() {
-//   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
-
-//   const toggleSidebar = () => {
-//     setIsSidebarCollapsed(!isSidebarCollapsed);
-//   };
-
-//   return (
-//     <div className='app_container'>
-//       <Navbar toggleSidebar={toggleSidebar} />
-//       <div className='content_container'>
-//         <Sidebar isCollapsed={isSidebarCollapsed} />
-//         <main className='main_content'>
-//           <Home />
-//         </main>
-//       </div>
-//     </div>
-//   );
-// }
-
-// export default App
-
-
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { createBrowserRouter, Outlet, RouterProvider } from 'react-router-dom';
 import './App.css';
 import Home from './components/Homes/Home';
@@ -41,7 +12,7 @@ function RootLayout({ isSidebarCollapsed, toggleSidebar }) {
       <Navbar toggleSidebar={toggleSidebar} />
       <div className='content_container'>
         <Sidebar isCollapsed={isSidebarCollapsed} />
-        <main className='main_content'>
+        <main className={`main_content ${isSidebarCollapsed ? 'main_content_collapsed' : 'main_content_expanded'}`}>
           <Outlet />
         </main>
       </div>
@@ -50,7 +21,20 @@ function RootLayout({ isSidebarCollapsed, toggleSidebar }) {
 }
 
 function App() {
-  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
+
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(window.innerWidth < 1280);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsSidebarCollapsed(window.innerWidth < 1280);
+    };
+
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
 
   const toggleSidebar = () => {
     setIsSidebarCollapsed(!isSidebarCollapsed);
