@@ -1,7 +1,8 @@
 const express = require('express');
 const dotenv = require('dotenv');
+const cors = require('cors')
 const connectToDatabase = require('./middlewire/DbConnecter');
-
+const UserRouter = require('./routers/UserRoute')
 dotenv.config();
 
 const app = express();
@@ -11,6 +12,13 @@ const app = express();
 connectToDatabase();
 
 app.use(express.json());
+app.use(cors())
+
+
+//Routers
+
+app.use('/',UserRouter)
+
 
 
 app.listen(process.env.PORT || 4008, ()=>{
