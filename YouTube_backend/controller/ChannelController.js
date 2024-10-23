@@ -1,18 +1,31 @@
 const Channel = require('../model/ChannelSchema');
+const User = require('../model/UserSchema')
 
 exports.AddChannel = async (req, res) => {
-    const { channelName, description, channelBanner, subscribers, videos } = req.body;
+    const { channelName, description, subscribers, videos } = req.body;
     const owner = req.user.userId;
     try {
+
+        if (!req.files || !req.files.channelBanner) {
+            return res.status(400).json({ message: 'Channel banner is required.' });
+        }
+        
+        const channelBanner = req.files.channelBanner[0].path;
+        
         const newChannel = new Channel({
             channelName,
             description,
-            channelBanner,
+            channelBanner:channelBanner,
             subscribers,
             owner,
             videos,
         });
 
+        const users = await User.findById(owner)
+
+        users.channels.push(newChannel._id)
+
+        await users.save();
         await newChannel.save();
 
         return res.status(201).json({

@@ -3,7 +3,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
 exports.AddUser = async (req, res) => {
-    const { userId, username, email, password, avatar, channels } = req.body;
+    const { userId, username, email, password, channels } = req.body;
 
     try {
         const existingUser = await User.findOne({ email });
@@ -11,6 +11,12 @@ exports.AddUser = async (req, res) => {
         if (existingUser) {
             return res.status(400).json({ message: "User Already Existed" })
         }
+
+        if (!req.files || !req.files.avatar) {
+            return res.status(400).json({ message: 'avatar is required.' });
+        }
+
+        const avatar = req.files.avatar[0].path;
 
         const hasPassword = await bcrypt.hash(password, 10)
 

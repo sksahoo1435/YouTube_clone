@@ -62,6 +62,8 @@ const upload = multer({ storage: storage });
 
 const uploadFields = upload.fields([
     { name: 'thumbnail', maxCount: 1 },
-    { name: 'video', maxCount: 1 } ])
+    { name: 'video', maxCount: 1 },
+    { name: 'avatar', maxCount: 1 },
+    { name: 'channelBanner', maxCount: 1 } ])
 
 module.exports = { uploadFields, deleteFromCloudinary, generateDownloadUrl };
