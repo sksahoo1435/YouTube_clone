@@ -4,7 +4,9 @@ const cors = require('cors')
 const connectToDatabase = require('./middlewire/DbConnecter');
 const UserRouter = require('./routers/UserRoute')
 const ChannelRouter = require('./routers/ChannelRoute')
+const VideoRouter = require('./routers/VideoRouter')
 const authToken = require('./middlewire/authMiddlewire')
+
 dotenv.config();
 
 const app = express();
@@ -21,7 +23,7 @@ app.use(cors())
 
 app.use('/', UserRouter)
 app.use('/', authToken, ChannelRouter)
-
+app.use('/video', authToken, VideoRouter)
 
 app.listen(process.env.PORT || 4008, () => {
     console.log("Server started")
