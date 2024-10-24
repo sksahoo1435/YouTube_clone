@@ -9,13 +9,13 @@ exports.AddChannel = async (req, res) => {
         if (!req.files || !req.files.channelBanner) {
             return res.status(400).json({ message: 'Channel banner is required.' });
         }
-        
+
         const channelBanner = req.files.channelBanner[0].path;
-        
+
         const newChannel = new Channel({
             channelName,
             description,
-            channelBanner:channelBanner,
+            channelBanner: channelBanner,
             subscribers,
             owner,
             videos,
@@ -60,6 +60,39 @@ exports.getChannelById = async (req, res) => {
         return res.status(200).json({
             message: "Channel retrieved successfully",
             channel,
+        });
+    } catch (error) {
+        return res.status(500).json({ message: 'An error occurred while retrieving the channel', error });
+    }
+}
+
+exports.updateChannel = async (req, res) => {
+    try {
+        const id = req.params.id;
+        const { channelName, description, subscribers } = req.body;
+        const channel = await Channel.findById(id);
+
+        if (!channel) {
+            return res.status(404).json({ message: "Channel not found" });
+        }
+
+        const userId = req.user.userId;
+
+        if (userId.toString() !== (channel.owner._id).toString()) {
+            return res.status(403).json({ message: "Forbidden." })
+        }
+
+        const updateData = {
+            channelName,
+            description,
+            subscribers
+        }
+
+        const updatedChannel = await Channel.findByIdAndUpdate(id, updateData, { new: true, runValidators: true })
+
+        return res.status(200).json({
+            message: "Channel Update successfully",
+            channel: updatedChannel
         });
     } catch (error) {
         return res.status(500).json({ message: 'An error occurred while retrieving the channel', error });
