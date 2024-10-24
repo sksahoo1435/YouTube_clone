@@ -1,8 +1,8 @@
 const Videos = require('../model/VedioSchema');
 const axios = require('axios');
 const Channel = require('../model/ChannelSchema');
-const User = require('../model/UserSchema')
 const { deleteFromCloudinary, generateDownloadUrl } = require('../middlewire/uploader');
+const Comment = require('../model/CommentSchema');
 
 
 exports.uploadVedio = async (req, res) => {
@@ -112,10 +112,12 @@ exports.deleteVideoData = async (req, res) => {
         }
       
         if (userId.toString() !== video.uploader.toString()) {
-            return res.status(400).json({ message: "Forbidden" })
+            return res.status(403).json({ message: "Forbidden" })
         }
 
         const deletedVideo = await Videos.findByIdAndDelete(id)
+
+        await Comment.deleteMany({ videoId: id });
 
         if (!deletedVideo) {
             return res.status(404).json({ message: 'Video not found' });
@@ -147,7 +149,7 @@ exports.deleteVideoData = async (req, res) => {
 
 exports.downloadVideo = async (req, res) => {
     try {
-        const { id } = req.body;
+        const id = req.params.id;
 
         const video = await Videos.findById(id);
         if (!video) {
